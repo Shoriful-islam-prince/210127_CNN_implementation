@@ -1,42 +1,38 @@
-## Custom Smartphone Image Prediction
+# CIFAR-10 Vehicle & Animal Classification using CNN
 
-After training the CNN model on the CIFAR-10 dataset, the trained model is
-evaluated on real-world images captured using a smartphone. These images
-represent the same classes as CIFAR-10 and are stored inside the `custom/`
-directory.
+This project implements a Convolutional Neural Network (CNN) using PyTorch
+to classify CIFAR-10 images. The model is trained on the CIFAR-10 dataset and
+tested on real-world smartphone images.
 
-The following code loads each custom image, applies the same preprocessing
-transforms used during training, and predicts the class along with the
-confidence score.
+## Dataset
+- CIFAR-10 (via torchvision)
+- Custom images captured using a smartphone
 
-```python
-custom_dir = "custom"
-images = sorted(os.listdir(custom_dir))  # keep order stable
+## Model Architecture
+- 3 Convolutional layers
+- Batch Normalization
+- ReLU activation
+- MaxPooling
+- Fully connected layers
+## Training
+- Dataset automatically downloaded using `torchvision.datasets`
+- Images preprocessed using `torchvision.transforms`
+- Model trained on CIFAR-10 training set
+- Training loss and accuracy visualized across epochs
+## Folder Structure
+custom/
+model/
+210127_CNN_implementation.ipynb
+## How to Run (Google Colab)
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Shoriful-islam-prince/210127_CNN_implementation/tree/main
+2. Open CNN_Image_Classification.ipynb in Google Colab
 
-model.eval()
-plt.figure(figsize=(15, 6))
+3. Select Runtime → Run all
 
-for i, img_name in enumerate(images):
-    img_path = os.path.join(custom_dir, img_name)
-    img = Image.open(img_path).convert("RGB")
-
-    img_t = transform(img).unsqueeze(0).to(device)
-
-    with torch.no_grad():
-        output = model(img_t)
-        probs = torch.softmax(output, dim=1)
-        conf, pred = torch.max(probs, 1)
-
-    plt.subplot(2, 5, i + 1)
-    plt.imshow(img)
-    plt.title(
-        f"{classes[pred.item()]} ({conf.item()*100:.1f}%)",
-        fontsize=10
-    )
-    plt.axis("off")
-
-plt.suptitle("Custom Smartphone Image Predictions (CIFAR-10 CNN)")
-plt.tight_layout(rect=[0, 0, 1, 0.92])
-plt.show()
+No manual file uploads are required.
+**Author**
+**Shoriful Islam Prince**
 
 
